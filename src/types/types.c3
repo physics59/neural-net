@@ -38,57 +38,17 @@ interface Layer
 // 	Value[] results;
 // }
 
-struct Neuron <PREV_LAYER_SIZE>
-{
-	Bias input_bias;
-	Weight[PREV_LAYER_SIZE]* input_weights;
-}
-
-struct HiddenLayer (Layer) <SIZE, PREV_SIZE>
-{
-	Neuron{PREV_SIZE}[SIZE]* neurons;
-	Value[SIZE]* results;
-}
 
 
-struct InputLayer (Layer) <SIZE>
-{
-	Input[SIZE] results;
-}
-fn Value[]? InputLayer.getValues(InputLayer* self, Allocator allocator) @dynamic
-{
-	Value[] val = alloc::alloc_array_try(
-		allocator, 
-		Value, 
-		SIZE
-	)!;
 
-	foreach(i, Input input : self.results)
-	{
-		val[i] = input();
-	}
+// struct NeuralNetwork <SIZE>
+// {
+// 	InputLayer input;
+// 	HiddenLayer[SIZE] layers;
+// 	OutputLayer output;
+// }
 
-	return val;
-}
-fn void? InputLayer.evaluate(InputLayer* self, Value[]) @dynamic => (void)null;
-
-
-struct OutputLayer (Layer) <SIZE>
-{
-	Output[SIZE] results;
-}
-fn void? OutputLayer.evaluate(OutputLayer* self, Value[] inputs) @dynamic
-{
-	foreach(i, Output output : self.results)
-	{
-		output(inputs[i]);
-	}
-}
-fn Value[]? OutputLayer.getValues(OutputLayer* self, Allocator) @dynamic => (Value[]){};
-
-
-struct NeuralNetwork <SIZE>
-{
-	Layer[SIZE] layers;
-}
-
+struct NeuralNetwork <SIZE>      
+{                                
+	Layer[SIZE] layers;    
+}                                
