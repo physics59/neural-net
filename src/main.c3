@@ -31,6 +31,7 @@ fn int main(String[] args) => @pool()
 {
 	const MainNet NETWORK = setup_network(LAYER_PROFILE, &INPUT_LAYER, &OUTPUT_LAYER);
 	io::printn(NETWORK);
+	NETWORK.run()!!;
 	io::printn("Hello, World!");
 	return 0;
 }
@@ -39,12 +40,13 @@ macro MainNet setup_network(ushort[*] $profile, Layer $inputs, Layer $outputs) @
 {
 	Layer[$profile.len] $layers;
 	$layers[0] = $inputs;
-	$layers[^1] = $outputs;
 
 	$for var $i = 1; $i < ($profile.len - 1); $i++:
 		HiddenLayer{$profile[$i], $profile[$i-1]} $hidden_layer;
 		$layers[$i] = &&$hidden_layer;
 	$endfor
+
+	$layers[^1] = $outputs;
 
 	MainNet $neural_net = { .layers = $layers };
 

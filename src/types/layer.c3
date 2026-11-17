@@ -17,6 +17,7 @@ fn void? HiddenLayer.evaluate(HiddenLayer* self, Value[] values) @dynamic
 }
 fn Value[]? HiddenLayer.getValues(HiddenLayer* self, Allocator) @dynamic => &self.results;
 
+
 struct InputLayer (Layer) <SIZE>
 {
 	Input[SIZE] results;
